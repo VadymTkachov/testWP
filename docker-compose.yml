@@ -1,0 +1,31 @@
+version: "3.1"
+
+services:
+    mysql:
+        image: mariadb
+        ports:
+            - "3260:3260"
+        volumes:
+            - /var/lib/mysql:/var/lib/mysql
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+    wordpress:
+        image: wordpress
+        ports:
+            - "2000:80"
+        volumes:
+            - /var/www/wordpress/html:/var/www/html
+        environment:
+            WORDPRESS_DB_PASSWORD: root
+        depends_on:
+            - mysql
+        links:
+            - mysql
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin
+        container_name: phpmyadmin
+        environment:
+            - PMA_ARBITRARY=1
+        restart: always
+        ports:
+            - 8899:80
